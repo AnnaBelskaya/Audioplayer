@@ -14,25 +14,30 @@ import players.Main;
 import java.io.File;
 
 public abstract class Player {
+    public File song;
+    public File[] playlist;
+
     protected Text songName;
     protected Pane root;
-
-    public String path;
-    public String song;
-    public String[] playlist;
 
     protected Media hit;
     protected MediaPlayer mediaPlayer;
 
 
-    public Player(String path, String song, String[] playlist) {
-        this.path = path;
+    public Player(File song, File[] playlist) {
         this.song = song;
         this.playlist = playlist;
     }
 
+    public void show(Pane root){
+        this.root = root;
+        showCurrentSongName();
+        showThatListIsEmpty();
+        root.getChildren().addAll(playSongButton());
+    }
+
     protected void playSong(){
-        hit = new Media(new File(path + song).toURI().toString());
+        hit = new Media(song.toURI().toString());
         mediaPlayer = new MediaPlayer(hit);
         mediaPlayer.play();
     }
@@ -41,13 +46,6 @@ public abstract class Player {
         try {
             mediaPlayer.stop();
         } catch (NullPointerException ex) { }
-    }
-
-    public void show(Pane root){
-        this.root = root;
-        showCurrentSongName();
-        showThatListIsEmpty();
-        root.getChildren().addAll(playSongButton());
     }
 
     public ImageView playSongButton(){
@@ -64,7 +62,7 @@ public abstract class Player {
     }
 
     protected void showCurrentSongName(){
-        songName = new Text("Playing: " + song);
+        songName = new Text("Playing: " + song.getName());
         songName.setFont(Font.font("Verdana", FontPosture.ITALIC,13));
         songName.setFill(Paint.valueOf("#D3D3D3"));
         songName.setTranslateX(Main.WIDTH/2-40);

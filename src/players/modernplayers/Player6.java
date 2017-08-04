@@ -6,6 +6,7 @@ import javafx.scene.layout.Pane;
 import players.Main;
 import utils.ModernPlayer;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -20,12 +21,12 @@ public class Player6 extends ModernPlayer {
         super.show(root);
     }
 
-    public Player6(String path, String[] playlist) {
-        super(path, playlist[0], playlist);
+    public Player6(File[] playlist) {
+        super(playlist[0], playlist);
     }
 
     public void shuffle(){
-        List<String> list = Arrays.asList(playlist);
+        List<File> list = Arrays.asList(playlist);
         Collections.shuffle(list);
         list.toArray(playlist);
     }
