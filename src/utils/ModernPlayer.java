@@ -35,10 +35,13 @@ public abstract class ModernPlayer extends Player {
             labels[i].setTranslateX(x);
             labels[i].setTranslateY(y);
             File temp = playlist[i];
+            Label l = labels[i];
             labels[i].setOnMouseClicked(event -> {
                 stopPlayingSong();
+                changeColor();
                 this.song = temp;
                 playSong();
+                l.setTextFill(Paint.valueOf("#8B73FF"));
                 removeCurrentSongName();
                 super.showCurrentSongName();
             });
@@ -48,5 +51,13 @@ public abstract class ModernPlayer extends Player {
 
     protected void clearPlaylist(){
         root.getChildren().removeAll(labels);
+    }
+
+    private void changeColor(){
+        if (labels != null) {
+            for (int i = 0; i < labels.length; i++){
+                labels[i].setTextFill(Paint.valueOf("#8B7355"));
+            }
+        }
     }
 }
