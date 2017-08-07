@@ -1,6 +1,7 @@
 package utils;
 
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -41,7 +42,7 @@ public class MainInterface {
     };
 
     private Pane root = new Pane();
-    Label[] labels = new Label[6];
+    private Label[] labels = new Label[6];
 
     public Pane getRoot() {
         root.getChildren().add(addBackgroundImage());
@@ -55,84 +56,42 @@ public class MainInterface {
         return backgroundImage;
     }
 
-    private Label[] addLabels (){
-        int x = 20, y = 10;
+    private VBox addLabels (){
         for (int i = 0; i < 6; i++){
-            y+=40;
             labels[i] = new Label("player " + (i+1));
             labels[i].setFont(Font.font("Comic Sans", FontPosture.ITALIC,18));
             labels[i].setTextFill(Paint.valueOf("#D3D3D3"));
-            labels[i].setTranslateX(x);
-            labels[i].setTranslateY(y);
-            switch (i){
-                case 0:
-                    labels[i].setOnMouseClicked(event -> {
-                        changeThePlayer();
-                        labels[0].setFont(Font.font("Comic Sans", FontPosture.ITALIC,20));
-                        labels[0].setTextFill(Paint.valueOf("#FF69B4"));
-                        simplePlayers[0].show(root);
-                    });
-                    break;
-                case 1:
-                    labels[i].setOnMouseClicked(event -> {
-                       changeThePlayer();
-                        labels[1].setFont(Font.font("Comic Sans", FontPosture.ITALIC,20));
-                        labels[1].setTextFill(Paint.valueOf("#FF69B4"));
-                        simplePlayers[1].show(root);
-                    });
-                    break;
-                case 2:
-                    labels[i].setOnMouseClicked(event -> {
-                        changeThePlayer();
-                        labels[2].setFont(Font.font("Comic Sans", FontPosture.ITALIC,20));
-                        labels[2].setTextFill(Paint.valueOf("#FF69B4"));
-                        modernPlayers[0].show(root);
-                    });
-                    break;
-                case 3:
-                    labels[i].setOnMouseClicked(event -> {
-                        changeThePlayer();
-                        labels[3].setFont(Font.font("Comic Sans", FontPosture.ITALIC,20));
-                        labels[3].setTextFill(Paint.valueOf("#FF69B4"));
-                        modernPlayers[1].show(root);
-                    });
-                    break;
-                case 4:
-                    labels[i].setOnMouseClicked(event -> {
-                        changeThePlayer();
-                        labels[4].setFont(Font.font("Comic Sans", FontPosture.ITALIC,20));
-                        labels[4].setTextFill(Paint.valueOf("#FF69B4"));
-                        modernPlayers[2].show(root);
-                    });
-                    break;
-                case 5:
-                    labels[i].setOnMouseClicked(event -> {
-                        changeThePlayer();
-                        labels[5].setFont(Font.font("Comic Sans", FontPosture.ITALIC,20));
-                        labels[5].setTextFill(Paint.valueOf("#FF69B4"));
-                        modernPlayers[3].show(root);
-                    });
-                    break;
+            int index = i;
+            if (i > 1) {
+                labels[i].setOnMouseClicked(e -> labelClicked(index, index-2));
+            } else {
+                labels[i].setOnMouseClicked(e -> labelClicked(index, index));
             }
         }
-        return labels;
+
+        VBox vBox = new VBox();
+        vBox.setSpacing(10);
+        vBox.setTranslateX(20);
+        vBox.setTranslateY(50);
+        vBox.getChildren().addAll(labels);
+
+        return vBox;
     }
 
     private void changeThePlayer(){
-        for (int i = 0; i < simplePlayers.length; i++) {
-            try {
-                simplePlayers[i].stopPlayingSong();
-            } catch (NullPointerException e) { }
-        }
-
-        for (int i = 0; i < modernPlayers.length; i++) {
-            try {
-                modernPlayers[i].stopPlayingSong();
-            } catch (NullPointerException e) { }
-        }
-
+        for (int i = 0; i < simplePlayers.length; i++)
+            simplePlayers[i].stopPlayingSong();
+        for (int i = 0; i < modernPlayers.length; i++)
+            modernPlayers[i].stopPlayingSong();
         root.getChildren().clear();
         root.getChildren().add(addBackgroundImage());
         root.getChildren().addAll(addLabels());
+    }
+
+    private void labelClicked(int i, int j){
+        changeThePlayer();
+        labels[i].setFont(Font.font("Comic Sans", FontPosture.ITALIC,20));
+        labels[i].setTextFill(Paint.valueOf("#FF69B4"));
+        modernPlayers[j].show(root);
     }
 }
