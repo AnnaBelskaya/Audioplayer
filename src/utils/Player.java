@@ -27,6 +27,8 @@ public abstract class Player {
     public Player(File song, File[] playlist) {
         this.song = song;
         this.playlist = playlist;
+        hit = new Media(song.toURI().toString());
+        mediaPlayer = new MediaPlayer(hit);
     }
 
     public void show(Pane root){
@@ -43,9 +45,9 @@ public abstract class Player {
     }
 
     public void stopPlayingSong(){
-        try {
+        if (mediaPlayer.getStatus().equals(MediaPlayer.Status.PLAYING)){
             mediaPlayer.stop();
-        } catch (NullPointerException ex) { }
+        }
     }
 
     public ImageView playSongButton(){
